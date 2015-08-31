@@ -15,10 +15,10 @@ def _setup_cookie(my_cookie):
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookie))
     urllib2.install_opener(opener)
     opener.addheaders = [('User-agent', 'Mozilla/5.0 (SymbianOS/9.3; Series60/3.2 NokiaE72-1/021.021; Profile/MIDP-2.1 Configuration/CLDC-1.1 ) AppleWebKit/525 (KHTML, like Gecko) Version/3.0 BrowserNG/7.1.16352'),
-                         ('Cookie', my_cookie), ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')]
+                         ('Cookie', my_cookie), ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'),('Content-Type','text/html; charset=utf-8')]
 
 
-def _fetch_like_tieba_list():
+def _fetch_fav_pub_list():
     print u'获取喜欢的贴吧ing...' if system_env else '获取喜欢的贴吧ing...'
     page_count = 1
     find_like_tieba = []
@@ -27,8 +27,8 @@ def _fetch_like_tieba_list():
         req = urllib2.Request(like_tieba_url)
         resp = urllib2.urlopen(req).read()
         resp = resp.decode('gbk').encode('utf8')
-        re_like_tieba = '<a href="\/f\?kw=.*?" title="(.*?)">.+?<\/a><\/td><td><a class="cur_exp" target="_blank".*?'
-        temp_like_tieba = re.findall(re_like_tieba, resp)
+        re_fav_pub = '<a href="\/f\?kw=.*?" title="(.*?)">.+?<\/a><\/td><td><a class="cur_exp" target="_blank".*?'
+        temp_like_tieba = re.findall(re_fav_pub, resp)
         if not temp_like_tieba:
             break
         if not find_like_tieba:
@@ -126,12 +126,12 @@ def _sign_tieba(tieba, BDUSS):
 
 def sign(my_cookie, BDUSS):
     _setup_cookie(my_cookie)
-    _like_tieba_list = _fetch_like_tieba_list()
-    if len(_like_tieba_list) == 0:
+    _fav_pub_list = _fetch_fav_pub_list()
+    if len(_fav_pub_list) == 0:
         print u"获取喜欢的贴吧失败，请检查Cookie和BDUSS是否正确" if system_env else "获取喜欢的贴吧失败，请检查Cookie和BDUSS是否正确"
         return
     thread_list = []
-    for tieba in _like_tieba_list:
+    for tieba in _fav_pub_list:
         t = threading.Thread(target=_sign_tieba, args=(tieba, BDUSS))
         thread_list.append(t)
         t.start()
@@ -148,10 +148,10 @@ def main():
     my_cookie_list = my_cookie.split('; ')
     for item in my_cookie_list:
         if "BDUSS=" in item:
-            BDUSS = item
-    if not BDUSS:
-        exit(0);
-    sign(my_cookie, BDUSS)
+            mBDUSS = item
+    if not mBDUSS:
+        exit(0)
+    sign(my_cookie, mBDUSS)
 
 if __name__ == "__main__":
     system_env = True if platform.system()=='Windows' else False
