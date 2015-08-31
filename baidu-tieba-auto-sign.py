@@ -141,6 +141,16 @@ def sign(my_cookie, BDUSS):
 
 
 def main():
+    handle = open("config.ini")
+    my_cookie = handle.readline()
+    if not my_cookie:
+        exit(0)
+    my_cookie_list = my_cookie.split('; ')
+    for item in my_cookie_list:
+        if "BDUSS=" in item:
+            BDUSS = item
+    if not BDUSS:
+        exit(0);
     sign(my_cookie, BDUSS)
 
 if __name__ == "__main__":
