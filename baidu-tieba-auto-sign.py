@@ -141,8 +141,6 @@ def sign(my_cookie, BDUSS):
 
 
 def main():
-    my_cookie = "填入你的Cookie"
-    BDUSS = "填入你的BDUSS"
     sign(my_cookie, BDUSS)
 
 if __name__ == "__main__":
