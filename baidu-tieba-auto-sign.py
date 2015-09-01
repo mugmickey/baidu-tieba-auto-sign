@@ -92,7 +92,7 @@ def _fetch_pub_info(pub_name):
     return already_sign, fid, tbs
 
 
-def _decode_uri_post(post_data):
+def _compose_dict(post_data):
     sign_key = "tiebaclient!!!"
     s = ""
     keys = post_data.keys()
@@ -106,7 +106,7 @@ def _decode_uri_post(post_data):
 
 def _make_sign_request(pub_name, fid, tbs, bduss):
     sign_url = 'http://c.tieba.baidu.com/c/c/forum/sign'
-    sign_request = {"BDUSS": bduss,
+    sign_request_dict = {"BDUSS": bduss,
                     "_client_id": "03-00-DA-59-05-00-72-96-06-00-01-00-04-00-4C-43-01-00-34-F4-02-00-BC-25-09-00-4E-36",
                     "_client_type": "4",
                     "_client_version": "1.2.1.17",
@@ -115,10 +115,10 @@ def _make_sign_request(pub_name, fid, tbs, bduss):
                     "kw": pub_name,
                     "net_type": "3",
                     'tbs': tbs}
-    sign_request = _decode_uri_post(sign_request)
-    sign_request = urlencode(sign_request)
+    sign_request_dict = _compose_dict(sign_request_dict)
+    sign_request_dict_encoded = urlencode(sign_request_dict)
 
-    sign_request = urllib2.Request(sign_url, sign_request)
+    sign_request = urllib2.Request(sign_url, sign_request_dict_encoded)
     sign_request.add_header(
         "Content-Type", "application/x-www-form-urlencoded")
     return sign_request
