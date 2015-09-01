@@ -13,7 +13,7 @@ from sys import stdout
 from pprint import pprint
 from urllib import quote
 from urllib import urlencode
-# from spincursor import SpinCursor
+from spincursor import SpinCursor
 
 
 def _setup_cookie(my_cookie):
@@ -26,9 +26,9 @@ def _setup_cookie(my_cookie):
                          ('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')]
 
 def _fetch_fav_pub_list():
-    # spin = SpinCursor(msg=u'获取喜欢的贴吧')
-    print u'获取喜欢的贴吧...' if system_env else '获取喜欢的贴吧...',
-    # spin.start()
+    spin = SpinCursor(msg=u'获取喜欢的贴吧')
+    # print u'获取喜欢的贴吧...' if system_env else '获取喜欢的贴吧...',
+    spin.start()
     page_count = 1
     list_fav_pubs = []
 
@@ -65,8 +65,8 @@ def _fetch_fav_pub_list():
     '''for item in list_fav_pubs:
         print repr(item)
         print type(item)'''
-    # spin.stop()
-    print ("\r"),
+    spin.stop()
+    # print ("\r"),
     return list_fav_pubs
 
 
