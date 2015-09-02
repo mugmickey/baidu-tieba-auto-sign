@@ -146,12 +146,12 @@ def _handle_response(sign_resp, pub_name):
 
 def _sign_a_pub(pub_name, bduss):
     already_sign, fid, tbs = _fetch_pub_info(pub_name)
-    if not already_sign:
+    '''if not already_sign:
         print pub_name.decode('utf-8') + u': 正在尝试签到' if system_env else pub_name + ': 正在尝试签到'
     else:
         if already_sign == "已签到":
             print pub_name.decode('utf-8') + u": 已签到" if system_env else pub_name + ": 已签到"
-            return
+            return'''
 
     if not fid or not tbs:
         print u"签到失败，原因未知" if system_env else "签到失败，原因未知"
