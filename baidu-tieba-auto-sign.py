@@ -106,15 +106,17 @@ def _compose_dict(post_data):
 
 def _make_sign_request(pub_name, fid, tbs, bduss):
     sign_url = 'http://c.tieba.baidu.com/c/c/forum/sign'
-    sign_request_dict = {"BDUSS": bduss,
-                    "_client_id": "03-00-DA-59-05-00-72-96-06-00-01-00-04-00-4C-43-01-00-34-F4-02-00-BC-25-09-00-4E-36",
-                    "_client_type": "4",
-                    "_client_version": "1.2.1.17",
-                    "_phone_imei": "540b43b59d21b7a4824e1fd31b08e9a6",
-                    "fid": fid,
-                    "kw": pub_name,
-                    "net_type": "3",
-                    'tbs': tbs}
+    sign_request_dict = {
+        "BDUSS": bduss,
+        "_client_id": "03-00-DA-59-05-00-72-96-06-00-01-00-04-00-4C-43-01-00-34-F4-02-00-BC-25-09-00-4E-36",
+        "_client_type": "4",
+        "_client_version": "1.2.1.17",
+        "_phone_imei": "540b43b59d21b7a4824e1fd31b08e9a6",
+        "fid": fid,
+        "kw": pub_name,
+        "net_type": "3",
+        "tbs": tbs
+        }
     sign_request_dict = _compose_dict(sign_request_dict)
     sign_request_dict_encoded = urlencode(sign_request_dict)
 
@@ -136,7 +138,8 @@ def _handle_response(sign_resp, pub_name):
     except KeyError:
         pass
     if error_code == '0':
-        print pub_name.decode('utf-8') + u"签到成功,经验+%d" % sign_bonus_point if system_env else pub_name + "签到成功,经验+%d" % sign_bonus_point
+        print pub_name.decode('utf-8') + u"签到成功,经验+%d" % sign_bonus_point if system_env \
+            else pub_name + "签到成功,经验+%d" % sign_bonus_point
     else:
         if 'error_msg' in sign_resp:
             error_msg = sign_resp['error_msg']
@@ -166,7 +169,8 @@ def sign(my_cookie, _bduss):
     _setup_cookie(my_cookie)
     _fav_pub_list = _fetch_fav_pub_list()
     if len(_fav_pub_list) == 0:
-        print u"获取喜欢的贴吧失败，请检查Cookie和BDUSS是否正确" if system_env else "获取喜欢的贴吧失败，请检查Cookie和BDUSS是否正确"
+        print u"获取喜欢的贴吧失败，请检查Cookie和BDUSS是否正确" if system_env \
+            else "获取喜欢的贴吧失败，请检查Cookie和BDUSS是否正确"
         return
 
     thread_list = []
@@ -188,11 +192,10 @@ def main():
     for item in my_cookie_list:
         if "BDUSS=" in item:
             mbduss_str = item
-    if not mbduss_str:
-        exit(0)
-    mbduss_list = mbduss_str.split('BDUSS=')
-    mbduss = mbduss_list[1]
-    sign(my_cookie, mbduss)
+            mbduss_list = mbduss_str.split('BDUSS=')
+            mbduss = mbduss_list[1]
+            sign(my_cookie, mbduss)
+            break
 
 
 if __name__ == "__main__":
