@@ -9,6 +9,7 @@ import json
 import threading
 import platform
 import os
+from time import sleep
 from sys import stdout
 # from bs4 import BeautifulSoup
 from pprint import pprint
@@ -150,6 +151,7 @@ def _handle_response(sign_resp, pub_name):
 
 def _sign_a_pub(pub_name, bduss):
     already_sign, fid, tbs = _fetch_pub_info(pub_name)
+
     if not already_sign:
         print pub_name.decode('utf-8') + u': 正在尝试签到' if system_env else pub_name + ': 正在尝试签到'
     else:
@@ -201,5 +203,7 @@ def main():
 
 if __name__ == "__main__":
     system_env = True if platform.system() == 'Windows' else False
-    main()
-    os.system("date /T >> tieba_log.log") if system_env else os.system("date >> tieba_log.log")
+    while True:
+        main()
+        os.system("date /T >> tieba_log.log") if system_env else os.system("date >> tieba_log.log")
+        sleep(42600)
